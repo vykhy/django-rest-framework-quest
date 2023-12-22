@@ -2,5 +2,5 @@ import requests
 
 endpoint = "http://localhost:8000/api/"
 
-response = requests.get(endpoint, params={"search": "Jhon"}, json={"name": "John"})
+response = requests.post(endpoint, json={"title": "Best Book", "price": 12.99})
 print(response.json())
