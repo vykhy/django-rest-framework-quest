@@ -12,9 +12,9 @@ def api_home(request, *args, **kwargs):
     # data = ProductSerializer(instance).data
 
     serialized = ProductSerializer(data=request.data)
-    if serialized.is_valid(raise_exception=True):
+    if serialized.is_valid():
 
         return Response(serialized.data)
-    return Response({"message": "Invalid data"}, status=400)
+    # return Response({"message": "Invalid data"}, status=400)
 
 
