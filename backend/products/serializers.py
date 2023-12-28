@@ -8,6 +8,8 @@ class ProductSerializer(serializers.ModelSerializer):
     edit_url = serializers.SerializerMethodField(read_only=True)
     url = serializers.HyperlinkedIdentityField(view_name='product-detail', lookup_field='pk')
 
+    # email = serializers.EmailField(write_only=True)
+
     class Meta:
         model = Product
         fields = [
@@ -20,6 +22,16 @@ class ProductSerializer(serializers.ModelSerializer):
             'url',
             'edit_url'
         ]
+    
+    def create(self, validated_data):
+        # return Product.objects.create(**validated_data) this is the default behaviour
+        # email = validated_data.pop('email')
+        # We can also do this in the View with serializer.save()
+        obj = super().create(validated_data)
+        return obj
+    
+    def update(self, instance, validated_data):
+        return instance
 
     def get_edit_url(self, obj):
         request = self.context.get('request')
