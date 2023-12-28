@@ -4,12 +4,11 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from .models import Product
 from .serializers import ProductSerializer
-from .permissions import IsStaffEditorPermission
+from api.mixins import StaffEditorPermissionMixin
 
-class ProductListCreateAPIView(generics.ListCreateAPIView):
+class ProductListCreateAPIView(StaffEditorPermissionMixin, generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    permission_classes = [permissions.IsAdminUser, IsStaffEditorPermission]
     
     def perform_create(self, serializer):
         # serializer.save(user=self.request.user)
@@ -31,21 +30,19 @@ class ProductListAPIView(generics.ListAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
-class ProductUpdateAPIView(generics.UpdateAPIView):
+class ProductUpdateAPIView(StaffEditorPermissionMixin,generics.UpdateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     lookup_field = 'pk'
-    permission_classes = [permissions.IsAdminUser, IsStaffEditorPermission]
     
     def perform_update(self, serializer):
         instance = serializer.save()
         if not instance.content:
             instance.content = instance.title
 
-class ProductDeleteAPIView(generics.DestroyAPIView):
+class ProductDeleteAPIView(StaffEditorPermissionMixin,generics.DestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    permission_classes = [permissions.IsAdminUser, IsStaffEditorPermission]
 
     def perform_destroy(self, instance):
         return super().perform_destroy(instance)
