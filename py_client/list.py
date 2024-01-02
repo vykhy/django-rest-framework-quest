@@ -5,7 +5,7 @@ password = 'abcd' or getpass()
 auth_endpoint = "http://localhost:8000/api/auth/"
 auth_data = {
     "username": "starc",
-    "password": password
+    "password": password # Staff -> djangUse1
 }
 auth_response = requests.post(auth_endpoint, json=auth_data)
 print(auth_response.json())
